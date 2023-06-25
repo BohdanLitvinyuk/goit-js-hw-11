@@ -5,7 +5,7 @@ import axios from "axios";
 
 const BASE_URL = `https://pixabay.com/api/`;
 const API_KEY = `37825452-fa376d31b47a01c9c70144d21`;
-const axios = require('axios').default;
+const axios = require('axios/dist/node/axios.cjs');
 const form = document.querySelector(".search-form");
 const gallery = document.querySelector(".gallery");
 
