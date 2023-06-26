@@ -4,7 +4,7 @@ import Notiflix from 'notiflix';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const axios = require('axios').default;
-const axios = require('axios/dist/browser/axios.cjs');
+// const axios = require('axios/dist/browser/axios.cjs');
 
 const BASE_URL = `https://pixabay.com/api/`;
 
@@ -14,7 +14,7 @@ const form = document.querySelector(".search-form");
 const gallery = document.querySelector(".gallery");
 
 form.addEventListener('submit', onFormSubmit)
-// document.addEventListener("scroll", update)
+
 function onFormSubmit(event) {
     
     event.preventDefault();
@@ -25,23 +25,23 @@ function onFormSubmit(event) {
     
 }
 
-function update() {
-  const { height: cardHeight } = document
-  .querySelector(".gallery")
-  .firstElementChild.getBoundingClientRect();
 
-window.scrollBy({
-  top: cardHeight * 2,
-  behavior: "smooth",
-});  
-}
 
 async function getElement(searchEl) {
-    gallery.innerHTML = '';
-    await axios.get(`${BASE_URL}?key=${API_KEY}&q=${searchEl}&image_type=photo&orientation=horizontal&safesearch=true`)
-        .then(({ data }) =>{ if (data.total === 0) {
-          Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-        } Notify.success(`Hooray! We found ${data.total} images.`);renderedImageList(data.hits)}  ).catch(error => console.log(error)) };
+
+  gallery.innerHTML = '';
+  
+  await axios.get(`${BASE_URL}?key=${API_KEY}&q=${searchEl}&image_type=photo&orientation=horizontal&safesearch=true`)
+    .then(({ data }) => {
+      if (data.totalHits === 0) {
+        Notify.failure('Sorry, there are no images matching your search query. Please try again.')
+      } else {
+        renderedImageList(data.hits);
+        Notify.success(`Hooray! We found ${data.totalHits} images.`);
+        console.log(data)
+      }
+    })
+}
 
 
 
