@@ -9,6 +9,7 @@ const BASE_URL = `https://pixabay.com/api/`;
 
 const API_KEY = `37825452-fa376d31b47a01c9c70144d21`;
 let PAGE = 1;
+let PER_PAGE = 40;
 const form = document.querySelector(".search-form");
 const gallery = document.querySelector(".gallery");
 const loadMoreBtn= document.querySelector(".load-more")
@@ -18,10 +19,15 @@ loadMoreBtn.addEventListener('click', onBtnClick);
 
 
 function onBtnClick() {
-
-  axios.get(`${BASE_URL}?key=${API_KEY}&q=${form.searchQuery.value}&image_type=photo&orientation=horizontal&safesearch=true&page=${PAGE+=1}&per_page=40`)
-  .then(({ data }) => {console.log(data);
-    LoadMoreRenderedImageList(data.hits)})
+  PAGE+=1;
+  axios.get(`${BASE_URL}?key=${API_KEY}&q=${form.searchQuery.value}&image_type=photo&orientation=horizontal&safesearch=true&page=${PAGE}&per_page=40`)
+  .then(( {data} ) => {console.log(PAGE);
+    if ( data.totalHits/40 <= PAGE  ){
+      console.log("finish");
+      console.log(data.totalHits/40 );
+      loadMoreBtn.classList.add('is-hidden');
+    }
+    loadMoreRenderedImageList(data.hits)})
     .catch(err => console.log(err));
  
  console.log(PAGE);
@@ -44,8 +50,14 @@ async function getElement(searchEl) {
   
   await axios.get(`${BASE_URL}?key=${API_KEY}&q=${searchEl}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=1`)
     .then(({ data }) => {
-      if (data.totalHits === 0) {
-        Notify.failure('Sorry, there are no images matching your search query. Please try again.')
+      if (data.totalHits === 0 ) {
+        Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+        
+      } else if (data.totalHits/40 <= PAGE){
+        loadMoreBtn.classList.add('is-hidden');
+        console.log(data);
+        renderedImageList(data.hits);
+        Notify.success(`Hooray! We found ${data.totalHits} images.`);
       } else {
         console.log(data);
         renderedImageList(data.hits);
@@ -81,7 +93,7 @@ async function renderedImageList(data) {
 }
 
 
- function LoadMoreRenderedImageList(data) {
+ function loadMoreRenderedImageList(data) {
   const  markup =  data.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => 
       `<div class="photo-card">
 <img src="${webformatURL}" alt="${tags}" loading="lazy" />
