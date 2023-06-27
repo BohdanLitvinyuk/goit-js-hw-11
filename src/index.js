@@ -1,5 +1,7 @@
 // import axios from "axios";
-
+import SimpleLightbox from "simplelightbox";
+// Додатковий імпорт стилів
+import "simplelightbox/dist/simple-lightbox.min.css";
 import Notiflix from 'notiflix';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
@@ -16,7 +18,7 @@ const loadMoreBtn= document.querySelector(".load-more")
 
 form.addEventListener('submit', onFormSubmit)
 loadMoreBtn.addEventListener('click', onBtnClick);
-
+loadMoreBtn.classList.add('is-hidden');
 
 function onBtnClick() {
   PAGE+=1;
@@ -26,6 +28,7 @@ function onBtnClick() {
       console.log("finish");
       console.log(data.totalHits/40 );
       loadMoreBtn.classList.add('is-hidden');
+      Notify.failure("We're sorry, but you've reached the end of search results.");
     }
     loadMoreRenderedImageList(data.hits)})
     .catch(err => console.log(err));
@@ -39,7 +42,7 @@ function onFormSubmit(event) {
    
      getElement(form.searchQuery.value);
   
-    
+     
 }
 
 
@@ -47,7 +50,7 @@ function onFormSubmit(event) {
 async function getElement(searchEl) {
 
   gallery.innerHTML = '';
-  
+  loadMoreBtn.classList.add('is-hidden');
   await axios.get(`${BASE_URL}?key=${API_KEY}&q=${searchEl}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=1`)
     .then(({ data }) => {
       if (data.totalHits === 0 ) {
@@ -55,16 +58,19 @@ async function getElement(searchEl) {
         
       } else if (data.totalHits/40 <= PAGE){
         loadMoreBtn.classList.add('is-hidden');
-        console.log(data);
+        Notify.failure("We're sorry, but you've reached the end of search results.");
+        // console.log(data);
         renderedImageList(data.hits);
         Notify.success(`Hooray! We found ${data.totalHits} images.`);
       } else {
         console.log(data);
         renderedImageList(data.hits);
         Notify.success(`Hooray! We found ${data.totalHits} images.`);
+        loadMoreBtn.classList.remove('is-hidden');
        
       }
-    })
+    });
+    
 }
 
 
