@@ -1,7 +1,7 @@
 // import axios from "axios";
-import SimpleLightbox from "simplelightbox";
-// Додатковий імпорт стилів
-import "simplelightbox/dist/simple-lightbox.min.css";
+// import SimpleLightbox from "simplelightbox";
+// // Додатковий імпорт стилів
+// import "simplelightbox/dist/simple-lightbox.min.css";
 import Notiflix from 'notiflix';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
