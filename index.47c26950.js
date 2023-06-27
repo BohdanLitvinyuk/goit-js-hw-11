@@ -35,5 +35,5 @@
     </p>
   </div>
 </div>
-`).join("");eZ.innerHTML=e,e_.refresh()}eQ.classList.add("is-hidden"),eJ.addEventListener("submit",function(t){t.preventDefault(),eG(eJ.searchQuery.value)}),eQ.addEventListener("click",eK);
-//# sourceMappingURL=index.99b6ecae.js.map
+`).join("");eZ.innerHTML=e,e_.refresh()}eJ.addEventListener("submit",function(t){t.preventDefault(),eG(eJ.searchQuery.value)}),eQ.addEventListener("click",eK);
+//# sourceMappingURL=index.47c26950.js.map
