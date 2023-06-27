@@ -18,7 +18,7 @@ const form = document.querySelector(".search-form");
 const gallery = document.querySelector(".gallery");
 const loadMoreBtn= document.querySelector(".load-more")
 
-loadMoreBtn.classList.add('is-hidden');
+
 
 form.addEventListener('submit', onFormSubmit)
 loadMoreBtn.addEventListener('click', onBtnClick);
@@ -51,7 +51,7 @@ function onFormSubmit(event) {
 
 async function getElement(searchEl) {
   gallery.innerHTML = '';
-  // loadMoreBtn.classList.add('is-hidden');
+  
   await axios.get(`${BASE_URL}?key=${API_KEY}&q=${searchEl}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=1`)
     .then(({ data }) => {
       
